@@ -61,7 +61,7 @@ static NSDictionary *gModifierKeyIdentifierMapping;
  *  A retry time interval in which we re-tap the shift key to ensure
  *  the alphabetic keyplane changed.
  */
-static const NSTimeInterval kMaxShiftKeyToggleDuration = 3.0;
+static const NSTimeInterval kMaxShiftKeyToggleDuration = 0.1;
 
 /**
  * Time to wait for the keyboard to appear or disappear.
