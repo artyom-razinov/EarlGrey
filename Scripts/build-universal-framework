@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# Script builds a universal `EarlGrey.framework`.
+
+# Go to a folder containing the script
+readonly scriptRoot=`cd $(dirname $0) && pwd`
+readonly derivedDataPath="$scriptRoot""/build"
+readonly xcodeprojectPath="$scriptRoot/../EarlGrey.xcodeproj"
+
+# clear build directory
+rm -rf "$derivedDataPath"
+
+# build for simulator
+echo "building for simulator"
+xcodebuild \
+	-configuration "Release" \
+	-scheme "EarlGrey" \
+	-sdk "iphonesimulator" \
+	-project "$xcodeprojectPath" \
+	-derivedDataPath "$derivedDataPath"
+
+# build for ios
+echo "building for ios"
+xcodebuild \
+	-configuration "Release" \
+	-scheme "EarlGrey" \
+	-sdk "iphoneos" \
+	-project "$xcodeprojectPath" \
+	-derivedDataPath "$derivedDataPath"
+
+# copy iphone build to create base for universal build
+productsPath="$derivedDataPath""/Build/Products"
+iphoneFrameworkPath="$productsPath/Release-iphoneos/EarlGrey.framework"
+simulatorFrameworkPath="$productsPath/Release-iphonesimulator/EarlGrey.framework"
+universalFrameworkPath="$productsPath/Release-universal"
+
+cp -r "$iphoneFrameworkPath" "$universalFrameworkPath"
+
+# merge binaries
+echo "merging binaries"
+
+lipo -create "$iphoneFrameworkPath/EarlGrey" "$simulatorFrameworkPath/EarlGrey" -output "$universalFrameworkPath/EarlGrey"
+
+lipoOutputRegexp="are:[[:space:]](.*)" # Architectures in the fat file: /long/path/to/EarlGrey are: i386 x86_64 armv7 arm64 
+resultArchitectures=`lipo -info "$universalFrameworkPath/EarlGrey" | grep -oE "$lipoOutputRegexp" | sed -E "s|$lipoOutputRegexp|\1|"` # i386 x86_64 armv7 arm64 
+echo "merged binary has the following architectures: $resultArchitectures"
+
+# place final framework at a proper location
+outputFrameworkPath="$scriptRoot/EarlGrey.framework"
+rm -rf "$outputFrameworkPath" # remove exising file for safety
+mv "$universalFrameworkPath" "$outputFrameworkPath"
+
+echo "resulting universal EarlGrey.framework was created at: $(cd $outputFrameworkPath && pwd)"
+
+# clear build directory again
+rm -rf "$derivedDataPath"
