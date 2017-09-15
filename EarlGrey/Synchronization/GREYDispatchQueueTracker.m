@@ -17,7 +17,7 @@
 #import "Synchronization/GREYDispatchQueueTracker.h"
 
 #include <dlfcn.h>
-#include <fishhook.h>
+#include <fishhook/fishhook.h>
 #include <libkern/OSAtomic.h>
 
 #import "Common/GREYConfiguration.h"

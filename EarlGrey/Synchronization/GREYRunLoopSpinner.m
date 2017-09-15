@@ -84,12 +84,14 @@ static void (^noopTimerHandler)(CFRunLoopTimerRef timer) = ^(CFRunLoopTimerRef t
       CFRunLoopStop(CFRunLoopGetCurrent());
     }
   };
+  drainCountingBlock = [drainCountingBlock copy];
 
   void (^wakeUpBlock)() = ^{
     // Never let the run loop sleep while we are draining it for the minimum drains.
     CFRunLoopWakeUp(CFRunLoopGetCurrent());
   };
-
+  wakeUpBlock = [wakeUpBlock copy];
+    
   // Drain the currently active mode in a while loop so that we handle cases where the active mode
   // finishes or is stopped. In these cases, we want to keep draining the (possibly new) active mode
   // for the remaining drains.
@@ -142,6 +144,7 @@ static void (^noopTimerHandler)(CFRunLoopTimerRef timer) = ^(CFRunLoopTimerRef t
       CFRunLoopStop(CFRunLoopGetCurrent());
     }
   };
+  beforeSourcesConditionCheckBlock = [beforeSourcesConditionCheckBlock copy];
 
   void (^beforeWaitingConditionCheckBlock)() = ^{
     __typeof__(self) strongSelf = weakSelf;
@@ -166,7 +169,8 @@ static void (^noopTimerHandler)(CFRunLoopTimerRef timer) = ^(CFRunLoopTimerRef t
       CFRunLoopStop(CFRunLoopGetCurrent());
     }
   };
-
+  beforeWaitingConditionCheckBlock = [beforeWaitingConditionCheckBlock copy];
+    
   CFRunLoopObserverRef conditionCheckingObserver =
       [self grey_setupObserverInMode:activeMode
               withBeforeSourcesBlock:beforeSourcesConditionCheckBlock

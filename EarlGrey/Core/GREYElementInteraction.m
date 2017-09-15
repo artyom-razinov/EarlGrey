@@ -284,7 +284,8 @@
                           userProvidedOutError:nil];
       }
     };
-
+    actionExecBlock = [actionExecBlock copy];
+      
     BOOL executionSucceeded =
         [[GREYUIThreadExecutor sharedInstance] executeSyncWithTimeout:interactionTimeout
                                                                 block:actionExecBlock
@@ -431,6 +432,7 @@
                              userProvidedOutError:nil];
       }
     };
+    assertionExecBlock = [assertionExecBlock copy];
 
     BOOL executionSucceeded =
         [[GREYUIThreadExecutor sharedInstance] executeSyncWithTimeout:interactionTimeout

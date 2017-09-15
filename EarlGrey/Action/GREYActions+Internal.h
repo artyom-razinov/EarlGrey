@@ -14,6 +14,8 @@
 // limitations under the License.
 //
 
+#import "GREYActions.h"
+
 /**
  *  @file GREYActions+Internal.h
  *  @brief Exposes GREYActions' interfaces and methods that are otherwise private for
