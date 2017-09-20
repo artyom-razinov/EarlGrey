@@ -716,10 +716,10 @@
                      [GREYError grey_nestedDescriptionForError:actionError]);
   } else {
     if ([actionError isKindOfClass:[GREYError class]]) {
-      NSMutableDictionary *errorDetails = [[NSMutableDictionary alloc] init];
-      errorDetails[kErrorDetailActionNameKey] = action.name;
+      GREYError *greyError = (GREYError *)actionError;
+      NSMutableDictionary *errorDetails = [[NSMutableDictionary alloc] initWithDictionary:greyError.errorInfo];
       errorDetails[kErrorDetailElementMatcherKey] = _elementMatcher.description;
-      [(GREYError *)actionError setErrorInfo:errorDetails];
+      [greyError setErrorInfo:errorDetails];
     }
     *userProvidedError = actionError;
   }
