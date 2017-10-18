@@ -898,10 +898,10 @@
                         [GREYError grey_nestedDescriptionForError:assertionError]);
   } else {
     if ([assertionError isKindOfClass:[GREYError class]]) {
-      NSMutableDictionary *errorDetails = [[NSMutableDictionary alloc] init];
-      errorDetails[kErrorDetailActionNameKey] = assertion.name;
+      GREYError *greyError = (GREYError *)assertionError;
+      NSMutableDictionary *errorDetails = [[NSMutableDictionary alloc] initWithDictionary:greyError.errorInfo];
       errorDetails[kErrorDetailElementMatcherKey] = _elementMatcher.description;
-      [(GREYError *)assertionError setErrorInfo:errorDetails];
+      [greyError setErrorInfo:errorDetails];
     }
     *userProvidedError = assertionError;
   }
