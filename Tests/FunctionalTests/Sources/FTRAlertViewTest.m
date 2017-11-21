@@ -58,6 +58,9 @@
       assertWithMatcher:grey_sufficientlyVisible()];
 }
 
+// TODO: Fix this test when the deployment target is 9.0 or greater.
+// Link: https://github.com/google/EarlGrey/issues/645
+#if !defined(__IPHONE_9_0) || (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_9_0)
 - (void)testStyledAlertView {
   [[EarlGrey selectElementWithMatcher:grey_text(@"Styled Alert")]
       performAction:[GREYActions actionForTap]];
@@ -73,5 +76,6 @@
   [[EarlGrey selectElementWithMatcher:grey_text(@"Leave")]
       performAction:[GREYActions actionForTap]];
 }
+#endif
 
 @end
