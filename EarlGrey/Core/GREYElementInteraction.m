@@ -367,8 +367,7 @@
       // an element not being found.
       NSArray *elements = [strongSelf matchedElementsWithTimeout:interactionTimeout
                                                            error:&elementNotFoundError];
-      id element = (elements.count != 0) ?
-      [strongSelf grey_uniqueElementInMatchedElements:elements andError:&assertionError] : nil;
+      id element = [strongSelf grey_uniqueElementInMatchedElements:elements andError:&assertionError];
 
       // Create the user info dictionary for any notificatons and set it up with the assertion.
       NSMutableDictionary *assertionUserInfo = [[NSMutableDictionary alloc] init];
@@ -511,25 +510,30 @@
   // If we find that multiple matched elements are present, we narrow them down based on
   // any index passed or populate the passed error if the multiple matches are present and
   // an incorrect index was passed.
-  if (elements.count > 1) {
-    // If the number of matched elements are greater than 1 then we have to use the index for
-    // matching. We perform a bounds check on the index provided here and throw an exception if
-    // it fails.
-    if (_index == NSUIntegerMax) {
-      *interactionError = [self grey_errorForMultipleMatchingElements:elements
-                                  withMatchedElementsIndexOutOfBounds:NO];
-      return nil;
-    } else if (_index >= elements.count) {
-      *interactionError = [self grey_errorForMultipleMatchingElements:elements
-                                  withMatchedElementsIndexOutOfBounds:YES];
-      return nil;
-    } else {
-      return [elements objectAtIndex:_index];
-    }
+  // If the number of matched elements are greater than 1 then we have to use the index for
+  // matching.
+  // We perform a bounds check on the index provided here and throw an exception if it fails.
+  
+  BOOL indexIsUnset = _index == NSUIntegerMax;
+  BOOL indexShouldBeProvided = elements.count > 1;
+  NSUInteger indexOfElementWithoutSpecialMeaning = indexIsUnset ? 0 : _index; // If index is unset it will be 0.
+  
+  if (indexShouldBeProvided && indexIsUnset) {
+    *interactionError = [self grey_errorForMultipleMatchingElements:elements
+                                withMatchedElementsIndexOutOfBounds:NO];
+    return nil;
+  } else if (indexOfElementWithoutSpecialMeaning == 0 && elements.count == 0) {
+    // If elements were not found, but index is not greater than 0,
+    // This can be a valid situation for checking if element is present.
+    // But for index 1 we should emit IndexOutOfBounds error.
+    return nil;
+  } else if (indexOfElementWithoutSpecialMeaning >= elements.count) {
+    *interactionError = [self grey_errorForMultipleMatchingElements:elements
+                                withMatchedElementsIndexOutOfBounds:YES];
+    return nil;
+  } else {
+    return [elements objectAtIndex:indexOfElementWithoutSpecialMeaning];
   }
-  // If you haven't got a multiple / element not found error then you have one single matched
-  // element and can select it directly.
-  return [elements firstObject];
 }
 
 /**
