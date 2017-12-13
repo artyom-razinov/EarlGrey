@@ -112,6 +112,8 @@
 		7CFDF8ED1DBBD5FC00CAADB3 /* GREYObjectFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CFDF8E71DBBD5FC00CAADB3 /* GREYObjectFormatter.m */; };
 		D210ED8D1E6F47D100978B9E /* GREYMultiFingerSwipeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = D210ED8B1E6F47D100978B9E /* GREYMultiFingerSwipeAction.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		D210ED8E1E6F47D100978B9E /* GREYMultiFingerSwipeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = D210ED8C1E6F47D100978B9E /* GREYMultiFingerSwipeAction.m */; };
+		F8B87F661FE182220072C78A /* GREYVisibilityCheckerImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = F8B87F641FE182210072C78A /* GREYVisibilityCheckerImageView.h */; };
+		F8B87F671FE182220072C78A /* GREYVisibilityCheckerImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = F8B87F651FE182210072C78A /* GREYVisibilityCheckerImageView.m */; };
 		FD1001B01C5B46C200B2DB0A /* GREYAction.h in Headers */ = {isa = PBXBuildFile; fileRef = FD1001011C5B46C100B2DB0A /* GREYAction.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FD1001B11C5B46C200B2DB0A /* GREYActionBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = FD1001021C5B46C100B2DB0A /* GREYActionBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FD1001B21C5B46C200B2DB0A /* GREYActionBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = FD1001031C5B46C100B2DB0A /* GREYActionBlock.m */; };
@@ -297,6 +299,8 @@
 		7CFDF8E71DBBD5FC00CAADB3 /* GREYObjectFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GREYObjectFormatter.m; sourceTree = "<group>"; };
 		D210ED8B1E6F47D100978B9E /* GREYMultiFingerSwipeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GREYMultiFingerSwipeAction.h; sourceTree = "<group>"; };
 		D210ED8C1E6F47D100978B9E /* GREYMultiFingerSwipeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GREYMultiFingerSwipeAction.m; sourceTree = "<group>"; };
+		F8B87F641FE182210072C78A /* GREYVisibilityCheckerImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GREYVisibilityCheckerImageView.h; sourceTree = "<group>"; };
+		F8B87F651FE182210072C78A /* GREYVisibilityCheckerImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GREYVisibilityCheckerImageView.m; sourceTree = "<group>"; };
 		FD06C66B1BECAD8B009032A5 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		FD06C66C1BECAD8B009032A5 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		FD06C66F1BECAD9B009032A5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -716,6 +720,8 @@
 				61E1CA8F1F2A922700FE81B9 /* GREYObjcRuntime.m */,
 				FD1001651C5B46C200B2DB0A /* GREYVisibilityChecker.h */,
 				FD1001661C5B46C200B2DB0A /* GREYVisibilityChecker.m */,
+				F8B87F641FE182210072C78A /* GREYVisibilityCheckerImageView.h */,
+				F8B87F651FE182210072C78A /* GREYVisibilityCheckerImageView.m */,
 				7CFDF8E61DBBD5FC00CAADB3 /* GREYObjectFormatter.h */,
 				7CFDF8E71DBBD5FC00CAADB3 /* GREYObjectFormatter.m */,
 				7CFDF8E21DBBD5FC00CAADB3 /* GREYFailureFormatter.h */,
@@ -964,6 +970,7 @@
 				D210ED8D1E6F47D100978B9E /* GREYMultiFingerSwipeAction.h in Headers */,
 				597E02CC1D55AC240052A8D1 /* GREYTapAction.h in Headers */,
 				597E030F1D55BC930052A8D1 /* GREYSlideAction.h in Headers */,
+				F8B87F661FE182220072C78A /* GREYVisibilityCheckerImageView.h in Headers */,
 				FDB26BA31DA467E900E7B5C0 /* GREYTestCaseInvocation.h in Headers */,
 				597E02CB1D55AC180052A8D1 /* GREYScrollAction.h in Headers */,
 				597E02CD1D55AC2B0052A8D1 /* GREYSwipeAction.h in Headers */,
@@ -1070,6 +1077,7 @@
 				TargetAttributes = {
 					FD1000E81C5B466F00B2DB0A = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -1144,6 +1152,7 @@
 				FD10021B1C5B46C200B2DB0A /* GREYCAAnimationDelegate.m in Sources */,
 				FD1001B41C5B46C200B2DB0A /* GREYActions.m in Sources */,
 				FD6D0B991C6D49400001EA75 /* GREYBaseAction.m in Sources */,
+				F8B87F671FE182220072C78A /* GREYVisibilityCheckerImageView.m in Sources */,
 				FD10025C1C5B489A00B2DB0A /* fishhook.c in Sources */,
 				FD10023C1C5B46C200B2DB0A /* GREYElementProvider.m in Sources */,
 				FD1002131C5B46C200B2DB0A /* GREYElementFinder.m in Sources */,
@@ -1286,6 +1295,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.earlgrey.EarlGrey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 x86_64 arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "";
@@ -1331,6 +1342,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.google.earlgrey.EarlGrey;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "i386 x86_64 arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "";

@@ -918,7 +918,7 @@ inline void GREYVisibilityDiffBufferSetVisibility(GREYVisibilityDiffBuffer buffe
 
   gLastExceptedAfterImage = shiftedImage;
 
-  UIImageView *shiftedImageView = [[UIImageView alloc] initWithImage:shiftedImage];
+  GREYVisibilityCheckerImageView *shiftedImageView = [[GREYVisibilityCheckerImageView alloc] initWithImage:shiftedImage];
   shiftedImageView.frame = CGRectOffset(shiftedImageView.frame, offset.x, offset.y);
   shiftedImageView.opaque = YES;
   return shiftedImageView;
