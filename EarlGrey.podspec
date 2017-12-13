@@ -77,7 +77,6 @@ Pod::Spec.new do |s|
     'EarlGrey/Common/GREYLogger.h',
     'EarlGrey/Common/GREYSwizzler.h',
     'EarlGrey/Common/GREYObjectFormatter.h',
-    'EarlGrey/Common/GREYVisibilityChecker.h',
     'EarlGrey/Core/GREYKeyboard.h',
     'EarlGrey/Core/GREYInteractionDataSource.h',
     'EarlGrey/Delegate/GREYSurrogateDelegate.h',
