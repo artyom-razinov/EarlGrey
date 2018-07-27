@@ -935,13 +935,17 @@
     [elementDescriptions addObject:[obj grey_description]];
   }];
 
+  // Note: [elementDescriptions description] will convert UTF8 to something like this: "\U0412\U043e\U0434\U043a\U0430"
+  // So we will join elements manually instead.
+  NSString *joinedDescriptions = [elementDescriptions componentsJoinedByString:@"\n"];
+  
   // Populate the multiple matching elements error.
   NSString *errorDescription;
   NSInteger errorCode;
   if (outOfBounds) {
     // Populate with an error specifying that the index provided for matching the multiple elements
     // was out of bounds.
-    errorDescription = [NSString stringWithFormat:@"Multiple elements were matched: %@ with an "
+    errorDescription = [NSString stringWithFormat:@"Multiple elements were matched:\n%@\nwith an "
                                                   @"index that is out of bounds of the number of "
                                                   @"matched elements. Please use an element "
                                                   @"index from 0 to %tu",
@@ -951,7 +955,7 @@
   } else {
     // Populate with an error specifying that multiple elements were matched without providing
     // an index.
-    errorDescription = [NSString stringWithFormat:@"Multiple elements were matched: %@. Please "
+    errorDescription = [NSString stringWithFormat:@"Multiple elements were matched:\n%@\n. Please "
                                                   @"use selection matchers to narrow the "
                                                   @"selection down to single element.",
                                                   elementDescriptions];

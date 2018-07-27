@@ -561,9 +561,11 @@
 				FD10019B1C5B46C200B2DB0A /* Synchronization */,
 				3F5122091EE1CF2B0000CC56 /* Traversal */,
 			);
+			indentWidth = 2;
 			name = EarlGrey;
 			path = EGFramework;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		FD1001001C5B46C100B2DB0A /* Action */ = {
 			isa = PBXGroup;

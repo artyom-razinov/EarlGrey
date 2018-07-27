@@ -858,9 +858,7 @@ inline void GREYVisibilityDiffBufferSetVisibility(GREYVisibilityDiffBuffer buffe
 
 /**
  *  Creates a UIImageView and adds a shifted color image of @c imageRef to it, in addition
- *  view.frame is offset by @c offset and image orientation set to @c orientation. There are 256
- *  possible values for a color component, from 0 to 255. Each color component will be shifted by
- *  exactly 128, examples: 0 => 128, 64 => 192, 128 => 0, 255 => 127.
+ *  view.frame is offset by @c offset and image orientation set to @c orientation.
  *
  *  @param imageRef The image whose colors are to be shifted.
  *  @param offset The frame offset to be applied to resulting view.
@@ -880,18 +878,16 @@ inline void GREYVisibilityDiffBufferSetVisibility(GREYVisibilityDiffBuffer buffe
   // negatively impacting the readability of code in visibility checker.
   unsigned char *shiftedImagePixels = grey_createImagePixelDataFromCGImageRef(imageRef, NULL);
 
-  for (NSUInteger i = 0; i < height * width; i++) {
-    NSUInteger currentPixelIndex = kColorChannelsPerPixel * i;
+  for (NSUInteger pixelIndex = 0; pixelIndex < height * width; pixelIndex++) {
+    NSUInteger firstChannelIndexOfPixelInImage = kColorChannelsPerPixel * pixelIndex;
     // We don't care about the [first] byte of the [X]RGB format.
-    for (unsigned char j = 1; j <= 2; j++) {
+    for (unsigned char channelIndexInXrgb = 1; j <= 3; j++) {
       static const unsigned char kShiftIntensityAmount[] = {0, 10, 10, 10}; // Shift for X, R, G, B
-      unsigned char pixelIntensity = shiftedImagePixels[currentPixelIndex + j];
-      if (pixelIntensity >= kShiftIntensityAmount[j]) {
-        pixelIntensity = pixelIntensity - kShiftIntensityAmount[j];
-      } else {
-        pixelIntensity = pixelIntensity + kShiftIntensityAmount[j];
-      }
-      shiftedImagePixels[currentPixelIndex + j] = pixelIntensity;
+      NSUInteger channelIndexInImage = currentPixelIndex + channelIndexInXrgb;
+      NSUInteger channelIndexInRgb = channelIndexInXrgb - 1;
+      unsigned char originalIntensity = shiftedImagePixels[channelIndexInImage];
+      
+      shiftedImagePixels[currentPixelIndex + j] = shiftedChannelIntensity(originalIntensity, channelIndexInRgb);
     }
   }
 
@@ -924,6 +920,34 @@ inline void GREYVisibilityDiffBufferSetVisibility(GREYVisibilityDiffBuffer buffe
   return shiftedImageView;
 }
 
+static const unsigned char kShiftIntensityAmount = 128;
+static const unsigned char kIsPixelDifferentThresholdMaxValue = kShiftIntensityAmount;
+
+/**
+ *  Shifts RGB channel intensity. Used to check visibility of element by altering
+ *  pixels inside element and check if alteration was actually visible on screen.
+ *
+ *  There are 256 possible values for a color component, from 0 to 255.
+ *  Each color component will be shifted by exactly 128
+ *  Examples: 0 => 128, 64 => 192, 128 => 0, 255 => 127.
+ *
+ *  Reason of this exact algorithm: it can be used to check difference that is caused by
+ *  altering image with maximum precision of 1/128 and it is constant for any value of
+ *  intensity (assume we have some kind of blending or blurring in our app and view is only 1% visible,
+ *  so we want to treat the view as invisible in our tests; it is a real case when view is behind a translucent navbar).
+ *
+ *  E.g.: if we instead invert the value like this 0 (00) => 255 (FF), there will be a situation
+ *  where 127 will be 128 and the precision of calculating difference will be low:
+ *  only 2 cases (0% and 100%) instead of 128 cases with the current algorithm.
+ *
+ *  @param originalIntensity Intensity of XRGB channel of pixel to be shifted (0..255).
+ *
+ *  @return Shifted intensity
+ */
+static inline unsigned char shiftedChannelIntensity(unsigned char originalIntensity) {
+  return (originalIntensity + kShiftIntensityAmount) % 256
+}
+
 /**
  *  @return @c true if the encoded rgb1[R, G, B] color values are different from rbg2[R, G, B]
  *          values, @c false otherwise.
@@ -934,7 +958,11 @@ inline void GREYVisibilityDiffBufferSetVisibility(GREYVisibilityDiffBuffer buffe
  *        would cause the test to fail, we resort to a naive check that rbg1 and rgb2 are not the
  *        same without specifying the exact delta between them.
  */
-static inline bool grey_isPixelDifferent(unsigned char rgb1[], unsigned char rgb2[]) {
+static inline bool grey_isPixelDifferent(
+                                         unsigned char originalRgb[],
+                                         unsigned char shiftedRgb[],
+                                         unsigned char threshold) {
+  unsigned char rDifference = threshold - abs(shiftedChannelIntensity(originalRgb[0]) - shiftedRgb[0])
   return (rgb1[0] != rgb2[0]) || (rgb1[1] != rgb2[1]) || (rgb1[2] != rgb2[2]);
 }
 
